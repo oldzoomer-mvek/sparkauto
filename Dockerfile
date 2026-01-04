@@ -25,6 +25,6 @@ RUN --mount=type=cache,target=/root/.m2 \
     OFFLINE_KEY=$(cat /run/secrets/offlineKey 2>/dev/null || echo "") && \
     ./mvnw clean package -Pproduction -DskipTests -Dvaadin.proKey=${PRO_KEY} -Dvaadin.offlineKey=${OFFLINE_KEY}'
 
-FROM gcr.io/distroless/java21-debian12:nonroot
+FROM gcr.io/distroless/java21-debian13:nonroot
 COPY --from=build /app/target/*.jar app.jar
 CMD ["app.jar", "--spring.profiles.active=prod"]
