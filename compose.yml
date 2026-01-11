@@ -6,10 +6,10 @@ services:
     networks:
       - traefik
     labels:
-      - "traefik.http.routers.newest.rule=Host(`${DOMAIN}`)"
-      - "traefik.http.routers.newest.entrypoints=websecure"
-      - "traefik.http.routers.newest.tls.certresolver=myresolver"
-      - "traefik.http.routers.newest.tls.domains[0].main=${DOMAIN}"
+      - "traefik.http.routers.sparkauto.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.sparkauto.entrypoints=websecure"
+      - "traefik.http.routers.sparkauto.tls.certresolver=myresolver"
+      - "traefik.http.routers.sparkauto.tls.domains[0].main=${DOMAIN}"
     restart: always
 
 networks:
