@@ -52,7 +52,11 @@ public class OrderView extends VerticalLayout {
         refreshGrid();
 
         Button addBtn = new Button("Добавить заказ", e -> openAddDialog());
+        addBtn.setWidthFull();
+        
         add(addBtn, grid);
+        setPadding(true);
+        setSpacing(true);
     }
 
     private void openAddDialog() {
@@ -86,7 +90,18 @@ public class OrderView extends VerticalLayout {
             }
         });
         Button cancel = new Button("Отмена", ev -> dialog.close());
-        dialog.add(clientSelect, workList, new HorizontalLayout(save, cancel));
+        
+        // Make form responsive for mobile
+        VerticalLayout formLayout = new VerticalLayout(clientSelect, workList);
+        formLayout.setSpacing(false);
+        formLayout.setPadding(false);
+        HorizontalLayout buttonLayout = new HorizontalLayout(save, cancel);
+        buttonLayout.setSpacing(true);
+        dialog.add(formLayout, buttonLayout);
+        dialog.setWidth("90vw");
+        dialog.setHeight("90vh");
+        dialog.setCloseOnOutsideClick(false);
+        dialog.setCloseOnEsc(true);
         dialog.open();
     }
 
@@ -124,7 +139,18 @@ public class OrderView extends VerticalLayout {
             }
         });
         Button cancel = new Button("Отмена", ev -> dialog.close());
-        dialog.add(clientSelect, workList, new HorizontalLayout(save, cancel));
+        
+        // Make form responsive for mobile
+        VerticalLayout formLayout = new VerticalLayout(clientSelect, workList);
+        formLayout.setSpacing(false);
+        formLayout.setPadding(false);
+        HorizontalLayout buttonLayout = new HorizontalLayout(save, cancel);
+        buttonLayout.setSpacing(true);
+        dialog.add(formLayout, buttonLayout);
+        dialog.setWidth("90vw");
+        dialog.setHeight("90vh");
+        dialog.setCloseOnOutsideClick(false);
+        dialog.setCloseOnEsc(true);
         dialog.open();
     }
 

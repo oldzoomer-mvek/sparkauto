@@ -37,9 +37,17 @@ public class ClientView extends VerticalLayout {
         grid.addColumn(Client::getPhone).setHeader("Телефон");
         grid.addColumn(Client::getEmail).setHeader("Эл. почта");
         grid.setItems(clientService.getAllClients());
+        
+        // Make grid responsive
+        grid.setMinWidth("300px");
+        grid.setWidth("100%");
 
         Button addBtn = new Button("Добавить клиента", e -> openAddDialog());
+        addBtn.setWidthFull();
+        
         add(addBtn, grid);
+        setPadding(true);
+        setSpacing(true);
     }
 
     private void openAddDialog() {
@@ -86,7 +94,18 @@ public class ClientView extends VerticalLayout {
             }
         });
         Button cancel = new Button("Отмена", ev -> dialog.close());
-        dialog.add(name, surname, middleName, vin, phone, email, new HorizontalLayout(save, cancel));
+        
+        // Make form responsive for mobile
+        VerticalLayout formLayout = new VerticalLayout(name, surname, middleName, vin, phone, email);
+        formLayout.setSpacing(false);
+        formLayout.setPadding(false);
+        HorizontalLayout buttonLayout = new HorizontalLayout(save, cancel);
+        buttonLayout.setSpacing(true);
+        dialog.add(formLayout, buttonLayout);
+        dialog.setWidth("90vw");
+        dialog.setHeight("90vh");
+        dialog.setCloseOnOutsideClick(false);
+        dialog.setCloseOnEsc(true);
         dialog.open();
     }
 

@@ -39,7 +39,11 @@ public class WorkView extends VerticalLayout {
         refreshGrid();
 
         Button addBtn = new Button("Добавить работу", e -> openAddDialog());
+        addBtn.setWidthFull();
+        
         add(addBtn, grid);
+        setPadding(true);
+        setSpacing(true);
     }
 
     private void openAddDialog() {
@@ -75,7 +79,18 @@ public class WorkView extends VerticalLayout {
             }
         });
         Button cancel = new Button("Отмена", ev -> dialog.close());
-        dialog.add(name, normalHours, pricePerHour, new HorizontalLayout(save, cancel));
+        
+        // Make form responsive for mobile
+        VerticalLayout formLayout = new VerticalLayout(name, normalHours, pricePerHour);
+        formLayout.setSpacing(false);
+        formLayout.setPadding(false);
+        HorizontalLayout buttonLayout = new HorizontalLayout(save, cancel);
+        buttonLayout.setSpacing(true);
+        dialog.add(formLayout, buttonLayout);
+        dialog.setWidth("90vw");
+        dialog.setHeight("90vh");
+        dialog.setCloseOnOutsideClick(false);
+        dialog.setCloseOnEsc(true);
         dialog.open();
     }
 
@@ -111,7 +126,18 @@ public class WorkView extends VerticalLayout {
             }
         });
         Button cancel = new Button("Отмена", ev -> dialog.close());
-        dialog.add(name, normalHours, pricePerHour, new HorizontalLayout(save, cancel));
+        
+        // Make form responsive for mobile
+        VerticalLayout formLayout = new VerticalLayout(name, normalHours, pricePerHour);
+        formLayout.setSpacing(false);
+        formLayout.setPadding(false);
+        HorizontalLayout buttonLayout = new HorizontalLayout(save, cancel);
+        buttonLayout.setSpacing(true);
+        dialog.add(formLayout, buttonLayout);
+        dialog.setWidth("90vw");
+        dialog.setHeight("90vh");
+        dialog.setCloseOnOutsideClick(false);
+        dialog.setCloseOnEsc(true);
         dialog.open();
     }
 

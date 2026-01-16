@@ -1,0 +1,83 @@
+/* Mobile responsive styles for Vaadin application */
+
+/* Ensure proper viewport settings */
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Make sure the main layout is responsive */
+vaadin-app-layout {
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Grid responsiveness */
+vaadin-grid {
+    width: 100%;
+    min-width: 300px;
+}
+
+/* Responsive form layouts */
+vaadin-dialog-overlay {
+    width: 95vw !important;
+    max-width: 500px !important;
+    height: 90vh !important;
+    max-height: 800px !important;
+}
+
+/* Make buttons full width on mobile */
+vaadin-button[theme~="primary"] {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+/* Responsive layout adjustments for small screens */
+@media (max-width: 768px) {
+    /* Adjust spacing and padding for mobile */
+    .v-vertical-layout {
+        padding: 8px !important;
+        margin: 0 !important;
+    }
+    
+    /* Make form fields full width on mobile */
+    vaadin-text-field, vaadin-combo-box, vaadin-multi-select-list-box {
+        width: 100% !important;
+        margin-bottom: 8px;
+    }
+    
+    /* Adjust grid column widths for small screens */
+    vaadin-grid-column {
+        min-width: 100px;
+    }
+    
+    /* Ensure drawer content is scrollable on mobile */
+    vaadin-drawer-content {
+        overflow-y: auto;
+        max-height: calc(100vh - 64px);
+    }
+}
+
+/* Additional responsive adjustments for very small screens */
+@media (max-width: 480px) {
+    .v-vertical-layout {
+        padding: 4px !important;
+    }
+    
+    vaadin-dialog-overlay {
+        width: 98vw !important;
+        height: 95vh !important;
+    }
+    
+    /* Reduce font sizes for small screens */
+    body {
+        font-size: 14px;
+    }
+    
+    h1, h2, h3 {
+        font-size: 1.2em;
+    }
+}
