@@ -36,8 +36,9 @@ public class WorkView extends VerticalLayout {
         grid.addColumn(Work::getName).setHeader("Название");
         grid.addColumn(Work::getNormalHours).setHeader("Нормо-часов");
         grid.addColumn(Work::getPricePerHour).setHeader("Цена за час");
-        // Optionally add actions column
+        // Add delete and edit button columns
         grid.addComponentColumn(work -> new Button("Редактировать", e -> openEditDialog(work))).setHeader("Действия");
+        grid.addComponentColumn(work -> new Button("Удалить", e -> deleteWork(work))).setHeader("Действия");
         refreshGrid();
 
         Button addBtn = new Button("Добавить работу", e -> openAddDialog());
@@ -46,6 +47,23 @@ public class WorkView extends VerticalLayout {
         add(addBtn, grid);
         setPadding(true);
         setSpacing(true);
+    }
+
+    private void deleteWork(Work work) {
+        Dialog dialog = new Dialog();
+        dialog.add("Вы уверены, что хотите удалить работу '" + work.getName() + "'?");
+        
+        Button confirm = new Button("Удалить", e -> {
+            workService.deleteWork(work.getId());
+            refreshGrid();
+            dialog.close();
+        });
+        Button cancel = new Button("Отмена", e -> dialog.close());
+        
+        HorizontalLayout buttonLayout = new HorizontalLayout(confirm, cancel);
+        buttonLayout.setSpacing(true);
+        dialog.add(buttonLayout);
+        dialog.open();
     }
 
     private void openAddDialog() {

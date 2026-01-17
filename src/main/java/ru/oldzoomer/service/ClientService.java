@@ -25,4 +25,8 @@ public class ClientService {
     public List<Client> getAllClients() {
         return repository.findAll();
     }
+    
+    public void deleteClient(Long id) {
+        repository.deleteById(id);
+    }
 }

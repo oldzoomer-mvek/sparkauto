@@ -38,6 +38,8 @@ public class ClientView extends VerticalLayout {
         grid.addColumn(Client::getVinNumber).setHeader("VIN");
         grid.addColumn(Client::getPhone).setHeader("Телефон");
         grid.addColumn(Client::getEmail).setHeader("Эл. почта");
+        // Add delete button column
+        grid.addComponentColumn(client -> new Button("Удалить", e -> deleteClient(client))).setHeader("Действия");
         grid.setItems(clientService.getAllClients());
         
         // Make grid responsive
@@ -50,6 +52,23 @@ public class ClientView extends VerticalLayout {
         add(addBtn, grid);
         setPadding(true);
         setSpacing(true);
+    }
+
+    private void deleteClient(Client client) {
+        Dialog dialog = new Dialog();
+        dialog.add("Вы уверены, что хотите удалить клиента " + client.getName() + " " + client.getSurname() + "?");
+        
+        Button confirm = new Button("Удалить", e -> {
+            clientService.deleteClient(client.getId());
+            refreshGrid();
+            dialog.close();
+        });
+        Button cancel = new Button("Отмена", e -> dialog.close());
+        
+        HorizontalLayout buttonLayout = new HorizontalLayout(confirm, cancel);
+        buttonLayout.setSpacing(true);
+        dialog.add(buttonLayout);
+        dialog.open();
     }
 
     private void openAddDialog() {

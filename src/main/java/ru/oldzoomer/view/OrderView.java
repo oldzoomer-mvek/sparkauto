@@ -48,9 +48,10 @@ public class OrderView extends VerticalLayout {
         grid.addColumn(o -> o.getClient().getName() + " " + o.getClient().getSurname()).setHeader("Клиент");
         grid.addColumn(Order::getTotalHours).setHeader("Нормо-часов");
         grid.addColumn(Order::getTotalPrice).setHeader("Стоимость");
-        // Edit button column
+        // Add delete and edit button columns
         grid.addComponentColumn(order -> new Button("Редактировать",
                 e -> openEditDialog(order))).setHeader("Действия");
+        grid.addComponentColumn(order -> new Button("Удалить", e -> deleteOrder(order))).setHeader("Действия");
         refreshGrid();
 
         Button addBtn = new Button("Добавить заказ", e -> openAddDialog());
@@ -59,6 +60,23 @@ public class OrderView extends VerticalLayout {
         add(addBtn, grid);
         setPadding(true);
         setSpacing(true);
+    }
+
+    private void deleteOrder(Order order) {
+        Dialog dialog = new Dialog();
+        dialog.add("Вы уверены, что хотите удалить заказ клиента " + order.getClient().getName() + " " + order.getClient().getSurname() + "?");
+        
+        Button confirm = new Button("Удалить", e -> {
+            orderService.deleteOrder(order.getId());
+            refreshGrid();
+            dialog.close();
+        });
+        Button cancel = new Button("Отмена", e -> dialog.close());
+        
+        HorizontalLayout buttonLayout = new HorizontalLayout(confirm, cancel);
+        buttonLayout.setSpacing(true);
+        dialog.add(buttonLayout);
+        dialog.open();
     }
 
     private void openAddDialog() {

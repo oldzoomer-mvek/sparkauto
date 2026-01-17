@@ -25,4 +25,8 @@ public class WorkService {
     public List<Work> getAllWorks() {
         return repository.findAll();
     }
+    
+    public void deleteWork(Long id) {
+        repository.deleteById(id);
+    }
 }
