@@ -64,6 +64,7 @@ src/
 │   │   ├── model/                    # Data models (Client, Order, Work)
 │   │   ├── repository/               # Data access layer
 │   │   ├── security/                 # Security configuration
+│   │   ├── service/                  # Business logic layer
 │   │   └── view/                     # UI views and navigation
 │   └── resources/
 │       └── application.properties    # Application configuration
@@ -79,3 +80,15 @@ The application uses a simple relational database schema with the following enti
 - **Orders**: Represents service orders linked to clients
 - **Works**: Defines different types of work with hours and pricing
 - **Order-Works**: Junction table for many-to-many relationship between orders and works
+
+## Security Configuration
+
+The default admin user is:
+
+- Username: `admin`
+- Password: `admin`
+
+## Acknowledgments
+
+- Built with [Vaadin](https://vaadin.com/)
+- Powered by [Spring Boot](https://spring.io/projects/spring-boot)
