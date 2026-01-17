@@ -123,6 +123,7 @@ public class OrderView extends VerticalLayout {
         // Bind fields to binder
         binder.forField(clientSelect)
                 .bind("client");
+        binder.setBean(order);
 
         Button save = new Button("Сохранить", ev -> {
             try {

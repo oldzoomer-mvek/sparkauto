@@ -110,6 +110,7 @@ public class WorkView extends VerticalLayout {
                 .withConverter(value -> value == null || value.isEmpty() ? null : Double.valueOf(value),
                         value -> value == null ? "" : value.toString())
                 .bind("pricePerHour");
+        binder.setBean(work);
 
         Button save = new Button("Сохранить", ev -> {
             try {
