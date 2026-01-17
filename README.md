@@ -21,7 +21,7 @@ Sparkauto CRM is a comprehensive Customer Relationship Management (CRM) applicat
 
 ## Prerequisites
 
-- Java 21
+- Java 25
 - Maven
 - Docker (for containerized deployment)
 
