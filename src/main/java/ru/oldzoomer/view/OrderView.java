@@ -2,9 +2,10 @@ package ru.oldzoomer.view;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.listbox.MultiSelectListBox;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -21,6 +22,7 @@ import ru.oldzoomer.dto.WorkDTO;
 import ru.oldzoomer.service.ClientService;
 import ru.oldzoomer.service.OrderService;
 import ru.oldzoomer.service.WorkService;
+import ru.oldzoomer.view.util.DialogUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -83,18 +85,18 @@ public class OrderView extends VerticalLayout {
         
         HorizontalLayout buttonLayout = new HorizontalLayout(confirm, cancel);
         buttonLayout.setSpacing(true);
-        dialog.add(buttonLayout);
+        dialog.getFooter().add(buttonLayout);
         dialog.open();
     }
 
     private void openAddDialog() {
         Dialog dialog = new Dialog();
-        ComboBox<ClientDTO> clientSelect = new ComboBox<>("Клиент");
+        ComboBox<ClientDTO> clientSelect = new ComboBox<>();
         clientSelect.setItems(clientService.getAllClients());
         clientSelect.setItemLabelGenerator(c -> c.getName() + " " + c.getSurname());
 
         // List of works with multi‑select
-        MultiSelectListBox<WorkDTO> workList = new MultiSelectListBox<>();
+        MultiSelectComboBox<WorkDTO> workList = new MultiSelectComboBox<>();
         workList.setItems(workService.getAllWorks());
         workList.setItemLabelGenerator(WorkDTO::getName);
 
@@ -118,29 +120,23 @@ public class OrderView extends VerticalLayout {
             }
         });
         Button cancel = new Button("Отмена", _ -> dialog.close());
-        
-        // Make form responsive for mobile
-        VerticalLayout formLayout = new VerticalLayout(clientSelect, workList);
-        formLayout.setSpacing(false);
-        formLayout.setPadding(false);
-        HorizontalLayout buttonLayout = new HorizontalLayout(save, cancel);
-        buttonLayout.setSpacing(true);
-        dialog.add(formLayout, buttonLayout);
-        dialog.setWidth("90vw");
-        dialog.setHeight("90vh");
-        dialog.setCloseOnOutsideClick(false);
-        dialog.setCloseOnEsc(true);
-        dialog.open();
+
+        // Use FormLayout instead of responsive layout
+        FormLayout formLayout = new FormLayout();
+        formLayout.addFormItem(clientSelect, "Клиент");
+        formLayout.addFormItem(workList, "Работы");
+
+        DialogUtil.openAddDialog(dialog, formLayout, binder, save, cancel, new OrderDTO());
     }
 
     private void openEditDialog(OrderDTO order) {
         Dialog dialog = new Dialog();
-        ComboBox<ClientDTO> clientSelect = new ComboBox<>("Клиент");
+        ComboBox<ClientDTO> clientSelect = new ComboBox<>();
         clientSelect.setItems(clientService.getAllClients());
         clientSelect.setItemLabelGenerator(c -> c.getName() + " " + c.getSurname());
         clientSelect.setValue(order.getClient());
 
-        MultiSelectListBox<WorkDTO> workList = new MultiSelectListBox<>();
+        MultiSelectComboBox<WorkDTO> workList = new MultiSelectComboBox<>();
         workList.setItems(workService.getAllWorks());
         workList.setItemLabelGenerator(WorkDTO::getName);
         // preselect existing works
@@ -168,19 +164,13 @@ public class OrderView extends VerticalLayout {
             }
         });
         Button cancel = new Button("Отмена", _ -> dialog.close());
-        
-        // Make form responsive for mobile
-        VerticalLayout formLayout = new VerticalLayout(clientSelect, workList);
-        formLayout.setSpacing(false);
-        formLayout.setPadding(false);
-        HorizontalLayout buttonLayout = new HorizontalLayout(save, cancel);
-        buttonLayout.setSpacing(true);
-        dialog.add(formLayout, buttonLayout);
-        dialog.setWidth("90vw");
-        dialog.setHeight("90vh");
-        dialog.setCloseOnOutsideClick(false);
-        dialog.setCloseOnEsc(true);
-        dialog.open();
+
+        // Use FormLayout instead of responsive layout
+        FormLayout formLayout = new FormLayout();
+        formLayout.addFormItem(clientSelect, "Клиент");
+        formLayout.addFormItem(workList, "Работы");
+
+        DialogUtil.openEditDialog(dialog, formLayout, binder, save, cancel, order);
     }
 
     private void refreshGrid() {

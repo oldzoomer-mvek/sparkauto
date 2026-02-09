@@ -2,6 +2,7 @@ package ru.oldzoomer.view;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import ru.oldzoomer.dto.WorkDTO;
 import ru.oldzoomer.service.WorkService;
+import ru.oldzoomer.view.util.DialogUtil;
 
 @Route(value = "works", layout = MainView.class)
 @RolesAllowed({"ROLE_ADMIN", "ROLE_USER"})
@@ -70,15 +72,15 @@ public class WorkView extends VerticalLayout {
         
         HorizontalLayout buttonLayout = new HorizontalLayout(confirm, cancel);
         buttonLayout.setSpacing(true);
-        dialog.add(buttonLayout);
+        dialog.getFooter().add(buttonLayout);
         dialog.open();
     }
 
     private void openAddDialog() {
         Dialog dialog = new Dialog();
-        TextField name = new TextField("Название");
-        TextField normalHours = new TextField("Нормо-часов");
-        TextField pricePerHour = new TextField("Цена за час");
+        TextField name = new TextField();
+        TextField normalHours = new TextField();
+        TextField pricePerHour = new TextField();
 
         // Bind fields to binder
         binder.forField(name)
@@ -106,26 +108,25 @@ public class WorkView extends VerticalLayout {
             }
         });
         Button cancel = new Button("Отмена", _ -> dialog.close());
-        
-        // Make form responsive for mobile
-        VerticalLayout formLayout = new VerticalLayout(name, normalHours, pricePerHour);
-        formLayout.setSpacing(false);
-        formLayout.setPadding(false);
-        HorizontalLayout buttonLayout = new HorizontalLayout(save, cancel);
-        buttonLayout.setSpacing(true);
-        dialog.add(formLayout, buttonLayout);
-        dialog.setWidth("90vw");
-        dialog.setHeight("90vh");
-        dialog.setCloseOnOutsideClick(false);
-        dialog.setCloseOnEsc(true);
-        dialog.open();
+
+        // Use FormLayout instead of responsive layout
+        FormLayout formLayout = new FormLayout();
+        formLayout.addFormItem(name, "Название");
+        formLayout.addFormItem(normalHours, "Нормо-часов");
+        formLayout.addFormItem(pricePerHour, "Цена за час");
+
+        DialogUtil.openAddDialog(dialog, formLayout, binder, save, cancel, new WorkDTO());
     }
 
     private void openEditDialog(WorkDTO work) {
         Dialog dialog = new Dialog();
-        TextField name = new TextField("Название", work.getName());
-        TextField normalHours = new TextField("Нормо-часов", String.valueOf(work.getNormalHours()));
-        TextField pricePerHour = new TextField("Цена за час", String.valueOf(work.getPricePerHour()));
+        TextField name = new TextField();
+        TextField normalHours = new TextField();
+        TextField pricePerHour = new TextField();
+
+        name.setPlaceholder(work.getName());
+        normalHours.setPlaceholder(work.getNormalHours().toString());
+        pricePerHour.setPlaceholder(work.getPricePerHour().toString());
 
         // Bind fields to binder
         binder.forField(name)
@@ -153,19 +154,14 @@ public class WorkView extends VerticalLayout {
             }
         });
         Button cancel = new Button("Отмена", _ -> dialog.close());
-        
-        // Make form responsive for mobile
-        VerticalLayout formLayout = new VerticalLayout(name, normalHours, pricePerHour);
-        formLayout.setSpacing(false);
-        formLayout.setPadding(false);
-        HorizontalLayout buttonLayout = new HorizontalLayout(save, cancel);
-        buttonLayout.setSpacing(true);
-        dialog.add(formLayout, buttonLayout);
-        dialog.setWidth("90vw");
-        dialog.setHeight("90vh");
-        dialog.setCloseOnOutsideClick(false);
-        dialog.setCloseOnEsc(true);
-        dialog.open();
+
+        // Use FormLayout instead of responsive layout
+        FormLayout formLayout = new FormLayout();
+        formLayout.addFormItem(name, "Название");
+        formLayout.addFormItem(normalHours, "Нормо-часов");
+        formLayout.addFormItem(pricePerHour, "Цена за час");
+
+        DialogUtil.openEditDialog(dialog, formLayout, binder, save, cancel, work);
     }
 
     private void refreshGrid() {

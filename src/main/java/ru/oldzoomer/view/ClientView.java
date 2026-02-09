@@ -2,6 +2,7 @@ package ru.oldzoomer.view;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import ru.oldzoomer.dto.ClientDTO;
 import ru.oldzoomer.service.ClientService;
+import ru.oldzoomer.view.util.DialogUtil;
 
 @Route(value = "clients", layout = MainView.class)
 @RolesAllowed({"ROLE_ADMIN", "ROLE_USER"})
@@ -42,10 +44,6 @@ public class ClientView extends VerticalLayout {
         // Add delete button column
         grid.addComponentColumn(client -> new Button("Удалить", _ -> deleteClient(client))).setHeader("Удаление");
         grid.setItems(clientService.getAllClients());
-
-        // Make grid responsive
-        grid.setMinWidth("300px");
-        grid.setWidth("100%");
 
         Button addBtn = new Button("Добавить клиента", _ -> openAddDialog());
         addBtn.setWidthFull();
@@ -75,18 +73,18 @@ public class ClientView extends VerticalLayout {
 
         HorizontalLayout buttonLayout = new HorizontalLayout(confirm, cancel);
         buttonLayout.setSpacing(true);
-        dialog.add(buttonLayout);
+        dialog.getFooter().add(buttonLayout);
         dialog.open();
     }
 
     private void openAddDialog() {
         Dialog dialog = new Dialog();
-        TextField name = new TextField("Имя");
-        TextField surname = new TextField("Фамилия");
-        TextField middleName = new TextField("Отчество");
-        TextField vin = new TextField("VIN");
-        TextField phone = new TextField("Телефон");
-        TextField email = new TextField("Эл. почта");
+        TextField name = new TextField();
+        TextField surname = new TextField();
+        TextField middleName = new TextField();
+        TextField vin = new TextField();
+        TextField phone = new TextField();
+        TextField email = new TextField();
 
         // Bind fields to binder
         binder.forField(name)
@@ -117,18 +115,16 @@ public class ClientView extends VerticalLayout {
         });
         Button cancel = new Button("Отмена", _ -> dialog.close());
 
-        // Make form responsive for mobile
-        VerticalLayout formLayout = new VerticalLayout(name, surname, middleName, vin, phone, email);
-        formLayout.setSpacing(false);
-        formLayout.setPadding(false);
-        HorizontalLayout buttonLayout = new HorizontalLayout(save, cancel);
-        buttonLayout.setSpacing(true);
-        dialog.add(formLayout, buttonLayout);
-        dialog.setWidth("90vw");
-        dialog.setHeight("90vh");
-        dialog.setCloseOnOutsideClick(false);
-        dialog.setCloseOnEsc(true);
-        dialog.open();
+        // Use FormLayout instead of responsive layout
+        FormLayout formLayout = new FormLayout();
+        formLayout.addFormItem(name, "Имя");
+        formLayout.addFormItem(surname, "Фамилия");
+        formLayout.addFormItem(middleName, "Отчество");
+        formLayout.addFormItem(vin, "VIN");
+        formLayout.addFormItem(phone, "Телефон");
+        formLayout.addFormItem(email, "Эл. почта");
+
+        DialogUtil.openAddDialog(dialog, formLayout, binder, save, cancel, new ClientDTO());
     }
 
     private void refreshGrid() {
