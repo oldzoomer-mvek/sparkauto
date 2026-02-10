@@ -13,7 +13,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.oldzoomer.dto.WorkDTO;
 import ru.oldzoomer.service.WorkService;
@@ -23,7 +22,6 @@ import ru.oldzoomer.view.util.DialogUtil;
 @PageTitle("Работы")
 @RolesAllowed({"ROLE_ADMIN", "ROLE_USER"})
 @Component
-@Scope("prototype")
 @Log4j2
 public class WorkView extends VerticalLayout {
 

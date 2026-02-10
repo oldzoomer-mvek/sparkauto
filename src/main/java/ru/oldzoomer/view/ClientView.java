@@ -14,7 +14,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import jakarta.annotation.security.RolesAllowed;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.oldzoomer.dto.ClientDTO;
 import ru.oldzoomer.service.ClientService;
@@ -25,7 +24,6 @@ import ru.oldzoomer.view.util.DialogUtil;
 @PageTitle("Клиенты")
 @RolesAllowed({"ROLE_ADMIN", "ROLE_USER"})
 @Component
-@Scope("prototype")
 @Log4j2
 public class ClientView extends VerticalLayout {
 

@@ -14,7 +14,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.oldzoomer.dto.ClientDTO;
 import ru.oldzoomer.dto.OrderDTO;
@@ -31,7 +30,6 @@ import java.util.HashSet;
 @PageTitle("Заказы")
 @RolesAllowed({"ROLE_ADMIN", "ROLE_USER"})
 @Component
-@Scope("prototype")
 @Log4j2
 public class OrderView extends VerticalLayout {
 
